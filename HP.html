@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>iwaのホームページ</title>
+<link rel="stylesheet" href="HP.css">
+</head>
+<body>
+<marquee behavior="alternate" scrollamount="10">🌟 iwaの個人ホームページへようこそ！ 🌟</marquee>
+
+<h1>iwaのワールドワイドウェッブページ</h1>
+<hr>
+
+<table width="100%">
+<tr>
+<td width="20%" valign="top" class="sidebar">
+<ul>
+<li><a href="#bio">自己紹介</a></li>
+<li><a href="#projects">プロジェクト</a></li>
+<li><a href="#links">おすすめリンク</a></li>
+<li><a href="mailto:kotaro@example.com">メールしてね</a></li>
+</ul>
+</td>
+<td valign="top">
+<h2 id="bio">自己紹介</h2>
+<p>こんにちは！ <b>iwa</b> です。。<span class="blink">電子工作</span> や <span class="blink">Raspberry Pi</span> が大好きで、<i>Stormworks</i> 🚢 と <i>Cities: Skylines</i> 🏙️ といったシミュレーションゲームにもハマっています。好きな食べ物は 🍓 いちご と 丸源ラーメン 🍜 です！</p>
+
+<h2 id="projects">MYのプロジェクト</h2>
+<ul>
+<li>Raspberry Pi Pico W で自動化ガジェット制作</li>
+<li>LEDマトリックスのアニメーション設計</li>
+<li>自作IoTセンサー</li>
+<li><i>Stormworks</i> でコンテナ船を建造中</li>
+</ul>
+
+<h2 id="links">おすすめリンク</h2>
+<ul>
+<li><a href="https://www.raspberrypi.org/" target="_blank">Raspberry Pi 公式サイト</a></li>
+<li><a href="https://store.steampowered.com/app/573090/Stormworks_Build_and_Rescue/" target="_blank">Stormworks (Steam)</a></li>
+<li><a href="https://www.citiesskylines.com/" target="_blank">Cities: Skylines 公式</a></li>
+</ul>
+
+<p id="counterMsg">あなたは <span id="counter">...</span> 人目の訪問者です！</p>
+
+<!-- カウントAPIを利用して訪問者数を取得 -->
+<script>
+fetch('https://api.countapi.xyz/update/iwai_kotaro/homepage?amount=1')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('counter').textContent = data.value.toLocaleString();
+  })
+  .catch(() => {
+    document.getElementById('counter').textContent = '???';
+  });
+</script>
+</td>
+</tr>
+</table>
+
+<hr>
+<center><small>最終更新日: 2025年7月16日<br>© 2025 Iwa-kota All rights reserved.</small></center>
+</body>
+</html>

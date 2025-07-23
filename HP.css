@@ -1,0 +1,69 @@
+
+body {
+  background: url('https://www.transparenttextures.com/patterns/graph-paper.png') #0000aa;
+  color: #ffffff;
+  font-family: "MS PGothic", "Comic Sans MS", "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  color: #00ff00;
+  text-shadow: 2px 2px #000000;
+}
+
+.sidebar {
+  background-color: #001a66;
+}
+
+.sidebar a {
+  color: #00ffff;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  background-color: #003399;
+  color: #ffff00;
+}
+
+a {
+  color: #ffcc00;
+}
+
+a:hover {
+  color: #ff00ff;
+}
+
+marquee {
+  font-size: 24px;
+  color: #ff00ff;
+  background: #000000;
+}
+
+.blink {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% { opacity: 0; }
+}
+
+table {
+  border: 3px ridge #00ffff;
+}
+
+td {
+  padding: 10px;
+}
+
+ul {
+  list-style-type: square;
+}
+
+hr {
+  border: 0;
+  height: 4px;
+  background-image: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+}
