@@ -1,0 +1,54 @@
+<!-- 教材用の偽 Windows セキュリティ警告ページ。実際のマルウェアや詐欺サイトではありません -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Microsoft Defender セキュリティ アラート</title>
+<style>
+  html,body{margin:0;padding:0;font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#ffffff;}
+  .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;z-index:9999;}
+  .modal{background:#ffffff;border:2px solid #0078d4;width:380px;padding:20px;box-shadow:0 0 12px rgba(0,0,0,0.5);}
+  .header{display:flex;align-items:center;margin-bottom:12px;}
+  .header-icon{width:32px;height:32px;background:#0078d4;border-radius:4px;margin-right:10px;}
+  .header h1{font-size:18px;margin:0;color:#0078d4;}
+  .message{font-size:14px;line-height:1.5;color:#000;}
+  .error{color:#c80000;font-weight:bold;font-size:15px;margin-bottom:8px;}
+  .support{margin-top:8px;font-size:14px;}
+  .support span{color:#c80000;font-weight:bold;}
+  .button-row{margin-top:18px;display:flex;justify-content:flex-end;}
+  .button{background:#0078d4;color:#fff;border:none;padding:6px 14px;font-size:14px;border-radius:2px;cursor:pointer;}
+</style>
+<script>
+function playBeep(){
+  const ctx=new(window.AudioContext||window.webkitAudioContext)();
+  const osc=ctx.createOscillator();
+  osc.type='square';
+  osc.frequency.setValueAtTime(880,ctx.currentTime);
+  osc.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime+0.15);
+}
+window.addEventListener('load',playBeep);
+</script>
+</head>
+<body>
+<img src="fa.png" alt="警告">
+<div class="overlay">
+  <div class="modal">
+    <div class="header">
+      <div class="header-icon"></div>
+      <h1>Microsoft Defender Security Center</h1>
+    </div>
+    <div class="message">
+      <div class="error">\u26a0\ufe0f 偽警告: 木馬ウェアが検出されました！</div>
+      お使いの PC は安全な状態です。\u3000Windows サポートに<strong>今すぐ</strong>ご連絡ください。<br>
+      <div class="support"><strong>サポート番号:</strong> <span>0120-XXX-XXX</span></div>
+      通話料無料・24 時間対応
+    </div>
+    <div class="button-row">
+      <button class="button" onclick="alert('サポートにお電話ください！');">OK</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
