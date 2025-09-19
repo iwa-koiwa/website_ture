@@ -1,0 +1,13 @@
+h1 {
+    background-color: rgb(70, 70, 70); 
+    color: white;
+}
+body {
+    text-align: center;
+}
+.main_text  {
+    background:rgb(240, 224, 169);border-radius:
+    12px;box-shadow:0 16px 30px rgba(0,0,0,0.25);
+    padding: 20px;
+    border-color: brown; border: 2px;
+}

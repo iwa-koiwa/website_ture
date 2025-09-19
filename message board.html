@@ -1,0 +1,38 @@
+<html>
+    <head> 
+        <meta  charset="utf-8">
+        <title>message board</title>
+       <!-- Javascript -->
+        <script>
+            function domessage(){
+                if(inputContent.value === ""){
+                    alert("内容を入れてください");
+                }else{
+                    messagea.innerText += "\n" + inputContent.value;
+                    QRcode.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${inputContent.value}`;
+                    alert("OK牧場")
+                }
+             let now = new date();
+            }
+        </script>
+    </head>
+    <body style="text-align: center;">
+        <!-- html -->
+        <h1 style="background-color: rgb(70, 70, 70); color: white;">message board</h1>
+        <div style="background:rgb(240, 224, 169);border-radius: 12px;box-shadow:0 16px 30px rgba(0,0,0,0.25);padding: 20px;
+         border-color: brown; border: 2px;">
+            <p id="messagea">伝言板 is not found</p>
+            <p><img id="QRcode" alt="ここに画像が生成される"></p>
+        </div>
+        <input id="inputContent"><button onclick="domessage()">セット</button>
+            
+
+    
+
+
+
+    </body>
+
+
+
+</html>

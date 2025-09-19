@@ -1,178 +1,19 @@
 <html>
+  <a-assets>
+    <img id="sky" src="image2.png"/>
+  </a-assets>
   <head>
-      <title>Hello, WebVR! - A-Frame</title>
-      <meta name="description" content="Hello, WebVR! - A-Frame">
-    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
-    <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
-    <!--
-    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v$npm_package_version/dist/aframe-physics-system.min.js"></script>
-    -->
-    <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script>
-    
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   </head>
   <body>
-    <script>
-      AFRAME.registerComponent('input-listen', {  
-        init:function () { //初期化
-          const txt = document.getElementById("txt");
-          this.el.grip=false;
-          
-          //レイキャスターが何かに交差したとき
-          this.el.addEventListener('raycaster-intersection', function (e) {
-            //複数選択された場合は0番目を覚えさせておく
-            this.selectedObj = e.detail.els[0];
-            txt.setAttribute("value", "Raycaster Intersect!");
-          });
-          //レイキャスターの交差が解除されたとき
-          this.el.addEventListener('raycaster-intersection-cleared', function (e) {
-            //選択オブジェクトの情報をリセット
-            this.selectedObj = null;
-            txt.setAttribute("value", "Raycaster Cleared");
-          });
-          
-          //xボタンを押し始めたときに実行される(左手のみ)
-          this.el.addEventListener('xbuttondown', function (e) {
-            txt.setAttribute("value", "x pressed");
-            this.emit('teleportstart');
-          });
-          //xボタンを離したときに実行される (左手のみ)
-          this.el.addEventListener('xbuttonup', function (e) {
-            txt.setAttribute("value", "x released");
-            this.emit('teleportend');
-          });
-          //yボタンを押し始めたときに実行される(左手のみ)
-          this.el.addEventListener('ybuttondown', function (e) {
-            txt.setAttribute("value", "y pressed");
-          });
-          //yボタンを離したときに実行される (左手のみ)
-          this.el.addEventListener('ybuttonup', function (e) {
-            txt.setAttribute("value", "y released");
-          });
-          //aボタンを押し始めたときに実行される(右手のみ)
-          this.el.addEventListener('abuttondown', function (e) {
-            txt.setAttribute("value", "a pressed");
-            //ballというクラス名のEntity(つまり弾)を全て取得
-            var els = document.querySelectorAll('.ball');
-              //弾を一つずつ削除
-              for (var i = 0; i < els.length; i++) {
-                els[i].parentNode.removeChild(els[i]);
-              }
-          });
-          //aボタンを離したときに実行される (右手のみ)
-          this.el.addEventListener('abuttonup', function (e) {
-            txt.setAttribute("value", "a released");
-          });
-          //bボタンを押し始めたときに実行される(右手のみ)
-          this.el.addEventListener('bbuttondown', function (e) {
-            txt.setAttribute("value", "b pressed");
-          });
-          //bボタンを離したときに実行される (右手のみ)
-          this.el.addEventListener('bbuttonup', function (e) {
-            txt.setAttribute("value", "b released");
-          });
-          //グリップボタンを押し始めたときに実行される(両手に対応)
-          this.el.addEventListener('gripdown', function (e) {
-            txt.setAttribute("value", "grip pressed");
-            this.grip=true;
-          });
-          //グリップボタンを離したときに実行される(両手に対応)
-          this.el.addEventListener('gripup', function (e) {
-            txt.setAttribute("value", "grip released");
-            this.grip=false;
-          });
-          //トリガーボタンを押し始めたときに実行される(両手に対応)
-          this.el.addEventListener('triggerdown', function (e) {
-            txt.setAttribute("value", "trigger pressed");
-            //コントローラの三次元座標を取得(thisはコントローラを参照)
-            var point = this.object3D.getWorldPosition();
-            //球エンティティを生成
-            var ball = document.createElement('a-sphere');
-            ball.setAttribute('class', 'ball');
-            ball.setAttribute('scale', '0.2 0.2 0.2');
-            ball.setAttribute('position', point);
-            //物理演算の影響をオンにする
-            ball.setAttribute('dynamic-body', 'shape: sphere; sphereRadius:0.2; ');
-            //Instantiate ball entity in a-scene
-            var scene = document.querySelector('a-scene');
-            scene.appendChild(ball);
-            //レイキャスターの向きを取得
-            var dir = this.getAttribute("raycaster").direction;
-            //ボールを飛ばす力を計算
-            var force = new THREE.Vector3(dir.x, dir.y, dir.z);
-            //2000倍くらいして結構な力をかける準備をする
-            force.multiplyScalar(2000);
-            //ボールにforceというプロパティを宣言して代入
-            ball.force = this.object3D.localToWorld(force); 
-        
-            //物理的演算に必要な情報がballで読み込み終わったら弾を撃つ 
-            ball.addEventListener('body-loaded', function (e) {
-              //弾(this)の位置を取得
-              var p = this.object3D.position;
-              //先ほど計算した弾(this)に加える勢いを取得
-              var f = this.force;
-              //弾に力を加えて飛ばす
-              this.body.applyForce(
-                new CANNON.Vec3(f.x, f.y, f.z), new CANNON.Vec3(p.x, p.y, p.z)
-              );
-            });
-            
-            txt.setAttribute("value", "sphere appendding finished");
-          });
-          //トリガーボタンを離したときに実行される(両手に対応)
-          this.el.addEventListener('triggerup', function (e) {
-            txt.setAttribute("value", "trigger released");
-          });
-          //ジョイスティックを傾けたとき(両手に対応)
-          this.el.addEventListener('thumbstickmoved', function (e) {
-            if (e.detail.y > 0.95) { txt.setAttribute("value", "DOWN"); }
-            if (e.detail.y < -0.95) { txt.setAttribute("value", "UP"); }
-            if (e.detail.x < -0.95) { txt.setAttribute("value", "LEFT"); }
-            if (e.detail.x > 0.95) { txt.setAttribute("value", "RIGHT"); }
-          });
-        },
-        
-        tick: function () { //毎フレーム更新
-          if (!this.el.selectedObj) { return; }
-          if (!this.el.grip) { return; }
-          //コントローラに追加したraycasterを取得
-          var ray = this.el.getAttribute("raycaster").direction;
-          //コントローラの1.1m手前の座標を計算(コントローラが原点)  
-          var p = new THREE.Vector3(ray.x, ray.y, ray.z);
-          p.normalize();
-          p.multiplyScalar(1.2);
-          //ローカル座標(コントローラ中心)をワールド座標に変換
-          this.el.object3D.localToWorld(p);
-          //Raycasterの先端に選択オブジェクトを追従させる
-          this.el.selectedObj.object3D.position.set(p.x, p.y, p.z);
-        }
-     });
-    </script>
-    <a-scene physics="debug: false; gravity: 0; restitution: 0.9;" background="color: #AAAAAA">
-      <a-box static-body class="collidable" position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-      <a-sphere static-body class="collidable" position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-cylinder static-body class="collidable" position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-      <a-plane static-body position="0 0 0" rotation="-90 0 0" width="10" height="10" src="https://tmdoi.github.io/website/js/controller/back.png" shadow></a-plane>
-      <a-plane static-body position="0 5 0" rotation="90 0 0" width="10" height="10" src="https://tmdoi.github.io/website/js/controller/back.png" shadow></a-plane>
-      <a-plane static-body position="0 2.5 -5" rotation="0 0 0" width="10" height="5" src="https://tmdoi.github.io/website/js/controller/back.png" shadow></a-plane>
-      <a-plane static-body position="0 2.5 5" rotation="0 180 0" width="10" height="5" src="https://tmdoi.github.io/website/js/controller/back.png" shadow></a-plane>
-      <a-plane static-body position="5 2.5 0" rotation="0 -90 0" width="10" height="5" src="https://tmdoi.github.io/website/js/controller/back.png" shadow></a-plane>
-      <a-plane static-body position="-5 2.5 0" rotation="0 90 0" width="10" height="5" src="https://tmdoi.github.io/website/js/controller/back.png" shadow></a-plane>
-      
-      <a-entity id="cameraRig">
-        <a-entity id="head" camera  wasd-controls look-controls position="0 1.6 0">
-          <a-text id="txt" value="--11-1.1.0" position="0 0 -1" scale="0.5 0.5 0.5" align="center" color="#FFFFFF"></a-text>
-        </a-entity>
-      
-        <a-entity teleport-controls="cameraRig: #cameraRig; teleportOrigin:#head;
-                  startEvents: teleportstart; endEvents: teleportend"
-                  raycaster="objects: .collidable; far:1.2;"
-                  oculus-touch-controls="hand: left" input-listen> </a-entity>
-        
-        <a-entity raycaster="objects: .collidable; far:1.2;"
-                  oculus-touch-controls="hand: right" input-listen> </a-entity>
-        
-      </a-entity>
-      <a-sky color="#ECECEC"></a-sky>
+    <a-scene>
+      <a-box position="-1 0.5 -3" rotation="0 0 0" color="#4CC3D9" radius="4"></a-box>
+      <a-box position="-1 2 -3" rotation="45 45 0" color="#4CC3D9"></a-box>
+      <a-sphere position="0 1.25 -5" radius="1" color="#EF2D5E"></a-sphere>
+      <a-sphere position="0 2.5 -5" radius="1" color="#EF2D5E"></a-sphere>
+      <a-cylinder position="1 0.75 -3" radius="0.1" height="5" color="#FFC65D"></a-cylinder>
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+      <a-sky src="#sky" rotation="0 -130 0"></a-sky>
     </a-scene>
   </body>
 </html>
